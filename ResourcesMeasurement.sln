@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourcesMeasurement", "ResourcesMeasurement\ResourcesMeasurement.csproj", "{223F23E1-5F5E-467E-8AA9-9D7504C9710C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiClient", "ApiClient\ApiClient.csproj", "{97328FD5-B259-4DD2-BA7B-9FD7D707001B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{223F23E1-5F5E-467E-8AA9-9D7504C9710C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{223F23E1-5F5E-467E-8AA9-9D7504C9710C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{223F23E1-5F5E-467E-8AA9-9D7504C9710C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{223F23E1-5F5E-467E-8AA9-9D7504C9710C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97328FD5-B259-4DD2-BA7B-9FD7D707001B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97328FD5-B259-4DD2-BA7B-9FD7D707001B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97328FD5-B259-4DD2-BA7B-9FD7D707001B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97328FD5-B259-4DD2-BA7B-9FD7D707001B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9EA0EC9B-7CFF-4D36-A67E-2462BBD81671}
+	EndGlobalSection
+EndGlobal
