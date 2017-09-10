@@ -11,6 +11,7 @@ namespace ResourcesMeasurement
     {
         private ManagementObjectSearcher _cpus;
         private ManagementObjectSearcher _ram;
+        private const int BYTES_TO_GIGA = 1048576;
 
         public ResourceMeasure()
         {
@@ -19,6 +20,7 @@ namespace ResourcesMeasurement
 
         }
 
+        //Gets the PC CPU cores stats and retrieves them in a List of CpuInformation
         public List<CpuInformation> MeasureCpu()
         {
             var result =  _cpus.Get()
@@ -32,14 +34,16 @@ namespace ResourcesMeasurement
             return result;
         }
 
+
+        //Gets the PC ram stats and retireves them in a RamInformation object
         public RamInformation MeasureRam()
         {
             var result = _ram.Get()
                 .Cast<ManagementObject>()
-                .Select(mo => new RamInformation
+                .Select(managementObject => new RamInformation
                 {
-                    Free = Double.Parse(mo["FreePhysicalMemory"].ToString()) / 1048576,
-                    Total = Double.Parse(mo["TotalVisibleMemorySize"].ToString()) / 1048576
+                    Free = Double.Parse(managementObject["FreePhysicalMemory"].ToString()) / BYTES_TO_GIGA,
+                    Total = Double.Parse(managementObject["TotalVisibleMemorySize"].ToString()) / BYTES_TO_GIGA
                 })
                .FirstOrDefault();
             return result;

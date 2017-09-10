@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ResourcesMeasurement"
         mc:Ignorable="d"
-        Title="MainWindow" Height="584.25" Width="630.813" Loaded="Window_Loaded">
+        Title="C# Test" Height="584.25" Width="630.813" Loaded="Window_Loaded" Unloaded="StopThread">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -14,7 +14,7 @@
         <Label Content="Total RAM" HorizontalAlignment="Left" Margin="13,183,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="TxtCpu" HorizontalAlignment="Left" Height="23" Margin="99,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
         <TextBox x:Name="TxtTotalRam" HorizontalAlignment="Left" Height="23" Margin="83,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
-        <Button x:Name="BtnGetApiInfo" Content="Get Information" HorizontalAlignment="Left" Margin="264,523,0,0" VerticalAlignment="Top" Width="97" Click="BtnSend_Click"/>
+        <Button x:Name="BtnGetApiInfo" Content="Get Information" HorizontalAlignment="Left" Margin="264,523,0,0" VerticalAlignment="Top" Width="97" Click="BtnGetApiInfoClick"/>
         <Label Content="Resources Information" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top" FontSize="16" RenderTransformOrigin="1.196,0.645"/>
         <DataGrid x:Name="DgCpus" Margin="10,84,10,0" Height="97" VerticalAlignment="Top"/>
         <Label Content="Free RAM" HorizontalAlignment="Left" Margin="13,211,0,0" VerticalAlignment="Top"/>
@@ -23,6 +23,7 @@
         <TextBox x:Name="TxtPercentUsedRam" HorizontalAlignment="Left" Height="23" Margin="83,242,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
         <DataGrid x:Name="DgJson" Margin="10,303,10,0" Height="215" VerticalAlignment="Top"/>
         <Label Content="API Information" HorizontalAlignment="Left" Margin="240,267,0,0" VerticalAlignment="Top" FontSize="16" RenderTransformOrigin="1.196,0.645"/>
+        <Button x:Name="Stop" Content="Stop" HorizontalAlignment="Left" Margin="519,245,0,0" VerticalAlignment="Top" Width="75" Click="StopThread"/>
 
     </Grid>
 </Window>

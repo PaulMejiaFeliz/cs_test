@@ -1,20 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ApiClient;
 
 namespace ResourcesMeasurement
 {
@@ -24,6 +13,7 @@ namespace ResourcesMeasurement
     public partial class MainWindow : Window
     {
         private readonly SynchronizationContext _sc;
+        private CancellationTokenSource _cancelationToken;
         public ResourceMeasure Resource { get; set; }
 
         public MainWindow()
@@ -32,29 +22,42 @@ namespace ResourcesMeasurement
             _sc = SynchronizationContext.Current;
         }
 
-        private async void BtnSend_Click(object sender, RoutedEventArgs e)
+        //Request the API information in a new thread
+        private async void BtnGetApiInfoClick(object sender, RoutedEventArgs e)
         {
-            await Task.Run(async() =>
+            await Task.Run(async () =>
             {
                 try
                 {
-                    await ApiClient.ApiClient.RunAsync();
-                    var leads = await ApiClient.ApiClient.GetLeadsAsync("v1/leads");
+                    ChangeRequestBtnState(false);
+                    var client = new ApiClient.ApiClient("http://apidev.gewaer.io/");
+                    var leads = await client.GetAsync("v1/leads");
                     ShowApiInfo(leads);
                 }
-                catch(Exception)
+                catch (Exception exc)
                 {
-
+                    MessageBox.Show(exc.Message, "Error");
                 }
             });
         }
 
+        //Enables or disables the BtnGetApiInfo button
+        private void ChangeRequestBtnState(bool state)
+        {
+            _sc.Post(new SendOrPostCallback(o =>
+            {
+                BtnGetApiInfo.IsEnabled = (bool) o;
+            }), state);
+        }
+
+        //Starts a new thead that get the CUP and RAM infformation
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Resource = new ResourceMeasure();
+            _cancelationToken = new CancellationTokenSource();
             await Task.Run(() =>
             {
-                while (true)
+                while (!_cancelationToken.IsCancellationRequested)
                 {
                     var cpus = Resource.MeasureCpu();
                     ShowCpuInfo(cpus);
@@ -64,18 +67,20 @@ namespace ResourcesMeasurement
 
                     Thread.Sleep(5000);
                 }
-            });
+            }, _cancelationToken.Token);
         }
-
+        
+        //Updates the CPU UI controls
         private void ShowCpuInfo(List<CpuInformation> cpus)
         {
             _sc.Post(new SendOrPostCallback(o =>
             {
-                TxtCpu.Text = ((List<CpuInformation>) o).FirstOrDefault(c => c.Name == "_Total").Usage;
+                TxtCpu.Text = ((List<CpuInformation>)o).FirstOrDefault(c => c.Name == "_Total").Usage;
                 DgCpus.ItemsSource = ((List<CpuInformation>)o).Where(c => c.Name != "_Total");
             }), cpus);
         }
 
+        //Updates the RAM UI controls
         private void ShowRamInfo(RamInformation ram)
         {
             _sc.Post(new SendOrPostCallback(o =>
@@ -88,12 +93,22 @@ namespace ResourcesMeasurement
             }), ram);
         }
 
-        private void ShowApiInfo(List<Lead> leads)
+        //Updates the API UI Data Grid
+        private void ShowApiInfo(object leads)
         {
             _sc.Post(new SendOrPostCallback(o =>
             {
-                DgJson.ItemsSource = ((List<Lead>)o);
+                DgJson.ItemsSource = (IEnumerable<object>)o;
             }), leads);
+        }
+
+        //If the token exists Request a cancelation
+        private void StopThread(object sender, RoutedEventArgs e)
+        {
+            if (_cancelationToken != null)
+            {
+                _cancelationToken.Cancel();
+            }
         }
     }
 }
